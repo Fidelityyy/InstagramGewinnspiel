@@ -1,38 +1,68 @@
 import time
 from selenium import webdriver
-import getpass
 
 browser = webdriver.Chrome('D:/chromedriver_win32/chromedriver.exe')
-browser.minimize_window()
-benutzername = input("Benutzername: ")
-passwort = input("Passwort: ")
-for x in range(100):
-    print("I N K B U S T E R S - - - G E W I N N S P I E L")
-go = False
-while not go:
-    goPrompt = input("go um zu starten ")
-    if goPrompt == 'go':
-        go = True
-browser.get('https://www.instagram.com/ink.busters/followers/')
-browser.maximize_window()
+followerNamen = []
+
+instaSeite = 'https://www.instagram.com/ink.busters/'
+instaFollowSeite = 'https://www.instagram.com/ink.busters/followers/'
+instaFollowSeiteKurz = '/ink.busters/followers/'
+instaBildSeite = 'https://www.instagram.com/p/CO2zfbAFuc3/'
+benutzername = ""  # input("Benutzername: ")
+passwort = ""  # input("Passwort: ")
+
+browser.get(instaFollowSeite)
 fertig = False
 while not fertig:
+    alleAnnehmenKnopf = browser.find_element_by_class_name('bIiDR')
+    alleAnnehmenKnopf.click()
+    time.sleep(5)
+    print('Benutzerdaten abschicken...')
+    emailFeld = browser.find_element_by_name('username')
+    emailFeld.send_keys(benutzername)
+    passwortFeld = browser.find_element_by_name('password')
+    passwortFeld.send_keys(passwort)
+    anmeldeButton = browser.find_element_by_class_name('_4EzTm')
+    anmeldeButton.click()
+    time.sleep(10)
+    print('Instagram Seite besuchen...')
+    browser.get(instaSeite)
+    time.sleep(10)
+    followerAnzahl = int((browser.find_element_by_xpath(
+        "/html/body/div[1]/section/main/div/header/section/ul/li[2]/a/span").get_attribute("title")).replace('.', ''))
+    followerKnopf = browser.find_element_by_xpath('//a[@href="' + instaFollowSeiteKurz + '"]')
+    time.sleep(5)
+    followerKnopf.click()
+    time.sleep(5)
+    # Scrollen von Follower
+    print("Follower abholen...")
+    followerPath = browser.find_element_by_xpath("/html/body/div[5]/div/div/div[2]")
+    css_selector = "body > div.RnEpo.Yx5HN > div > div > div.isgrP"
+    SCROLL_PAUSE_TIME = 2
+    last_height = browser.execute_script("return document.querySelector('" + css_selector + "').scrollHeight")
+    while True:
+        browser.execute_script(
+            "document.querySelector('" + css_selector + "').scrollTo(0, document.querySelector('" + css_selector +
+            "').scrollHeight);")
+        time.sleep(SCROLL_PAUSE_TIME)
+        new_height = browser.execute_script("return document.querySelector('" + css_selector + "').scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
     try:
-        alleAnnehmenKnopf = browser.find_element_by_class_name('bIiDR')
-        alleAnnehmenKnopf.click()
-        time.sleep(5)
-        emailFeld = browser.find_element_by_name('username')
-        emailFeld.send_keys(benutzername)
-        passwortFeld = browser.find_element_by_name('password')
-        passwortFeld.send_keys(passwort)
-        anmeldeButton = browser.find_element_by_class_name('_4EzTm')
-        anmeldeButton.click()
-        time.sleep(10)
-        browser.get('https://www.instagram.com/ink.busters/')
-        time.sleep(10)
-        followerKnopf = browser.find_element_by_xpath('//a[@href="' + '/ink.busters/followers/' + '"]')
-        time.sleep(5)
-        followerKnopf.click()
+        for x in range(1, followerAnzahl):
+            followerNamen.append((browser.find_element_by_xpath(
+                "/html/body/div[5]/div/div/div[2]/ul/div/li[" + str(x) + "]/div/div[1]/div[2]/div[1]/span/a"))
+                                 .get_attribute("href"))
     except:
-        #browser.close()
-        time.sleep(1)
+        browser.get(instaBildSeite)
+        for x in range(100):
+            print("I N K B U S T E R S - - - G E W I N N S P I E L")
+        go = False
+        while not go:
+            goPrompt = input("go um zu starten ")
+            if goPrompt == 'go':
+                go = True
+
+        for follower in followerNamen:
+            print(follower)
