@@ -116,6 +116,7 @@ def restzeug():
             print("Gewinner ermitteln...")
             time.sleep(randint(5, 10))
             print(gewinner)
+            nochmalprompt = ''
         else:
             exit(0)
 
