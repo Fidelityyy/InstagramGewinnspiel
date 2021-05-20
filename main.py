@@ -9,7 +9,7 @@ options.add_argument("user-data-dir=C:/Users/" + pcBenutzername + "/AppData/Loca
 browser = webdriver.Chrome(executable_path="D:/chromedriver_win32/chromedriver.exe", options=options)
 followerNamen = []
 kommentarNamen = []
-anzahlKommentareLaden = input("Wie oft Kommentare laden? ")
+anzahlKommentareLaden = 100
 
 instaSeite = 'https://www.instagram.com/ink.busters/'
 instaFollowSeite = 'https://www.instagram.com/ink.busters/followers/'
