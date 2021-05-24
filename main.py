@@ -3,7 +3,7 @@ import time
 from selenium import webdriver
 from random import randint
 
-pcBenutzername = "R11111111111"
+pcBenutzername = ""  # YOUR PC NAME
 options = webdriver.ChromeOptions()
 options.add_argument("user-data-dir=C:/Users/" + pcBenutzername + "/AppData/Local/Google/Chrome/User Data")
 browser = webdriver.Chrome(executable_path="D:/chromedriver_win32/chromedriver.exe", options=options)
@@ -11,27 +11,13 @@ followerNamen = []
 kommentarNamen = []
 anzahlKommentareLaden = 100
 
-instaSeite = 'https://www.instagram.com/ink.busters/'
-instaFollowSeite = 'https://www.instagram.com/ink.busters/followers/'
-instaFollowSeiteKurz = '/ink.busters/followers/'
-instaBildSeite = 'https://www.instagram.com/p/CO2zfbAFuc3/'
-benutzername = ""  # input("Benutzername: ")
-passwort = ""  # input("Passwort: ")
+instaSeite = ''  # example : https://www.instagram.com/yourinstagrampage/
+instaFollowSeite = ''  # example : https://www.instagram.com/yourinstagrampage/followers/
+instaFollowSeiteKurz = ''  # example : /yourinstagrampage/followers/
+instaBildSeite = ''  # LINK TO YOUR INSTAGRAM PICTURE
 
 browser.get(instaFollowSeite)
-# alleAnnehmenKnopf = browser.find_element_by_class_name('bIiDR')
-# alleAnnehmenKnopf.click()
-# time.sleep(5)
-# print('Benutzerdaten abschicken...')
-# emailFeld = browser.find_element_by_name('username')
-# emailFeld.send_keys(benutzername)
-# passwortFeld = browser.find_element_by_name('password')
-# passwortFeld.send_keys(passwort)
-# anmeldeButton = browser.find_element_by_class_name('_4EzTm')
-# anmeldeButton.click()
-# time.sleep(10)
 print('Instagram Seite besuchen...')
-# browser.get(instaSeite)
 time.sleep(5)
 followerAnzahl = int((browser.find_element_by_xpath(
     "/html/body/div[1]/section/main/div/header/section/ul/li[2]/a/span").get_attribute("title")).replace('.', ''))
@@ -59,7 +45,7 @@ while True:
 def restzeug():
     print(str(len(followerNamen)))
     for x in range(100):
-        print("I N K B U S T E R S - - - G E W I N N S P I E L")
+        print("G E W I N N S P I E L")
     print("Storyposter abholen...")
     print("Kommentare abholen...")
     browser.get(instaBildSeite)
@@ -100,7 +86,7 @@ def restzeug():
             gewinnspielliste.append(username)
     # print(user_names)
     gewinner = random.choice(gewinnspielliste)
-    print("I N K B U S T E R S - - - G E W I N N S P I E L")
+    print("G E W I N N S P I E L")
     go = False
     while not go:
         goprompt = input("go um zu starten ")
@@ -117,8 +103,11 @@ def restzeug():
             time.sleep(randint(5, 10))
             print(gewinner)
             nochmalprompt = ''
-        else:
+        elif nochmalprompt == 'nein':
+            browser.close()
             exit(0)
+        else:
+            nochmalprompt = ''
 
 
 try:
